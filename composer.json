@@ -1,0 +1,16 @@
+{
+    "name": "daniel/htdocs",
+    "authors": [
+        {
+            "name": "Daniel Tremură",
+            "email": "tremuradaniel@gmail.com"
+        }
+    ],
+    "description": "Orderus",
+    "require": {},
+    "autoload": {
+        "classmap": [
+            "classes"
+        ]
+    }
+}
