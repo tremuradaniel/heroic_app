@@ -1,7 +1,11 @@
-$("button").on("click", function(event) {
+
+alert();
+
+$("#start-battle").on("click", function(event) {
+    alert();
     event.preventDefault();
     request = $.ajax({
-        url: "./routes/begin_fight.php",
+        url: "startBattle.php",
         type: "get",
         data: []
     });
