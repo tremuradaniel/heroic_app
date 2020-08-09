@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class FighterTest extends TestCase
 {
-    public function testFighterGetsTraits(): void
+    public function testFighter(): void
     {
         $fighter = new Fighter('beast');
         foreach ($fighter->traits as $value) {
@@ -13,21 +13,6 @@ class FighterTest extends TestCase
         }
 
     }
-
-    // public function testCannotBeCreatedFromInvalidEmailAddress(): void
-    // {
-    //     $this->expectException(InvalidArgumentException::class);
-
-    //     Email::fromString('invalid');
-    // }
-
-    // public function testCanBeUsedAsString(): void
-    // {
-    //     $this->assertEquals(
-    //         'user@example.com',
-    //         Email::fromString('user@example.com')
-    //     );
-    // }
 }
 
 ?>
