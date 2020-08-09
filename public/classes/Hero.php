@@ -18,10 +18,5 @@
                 return $damage / 2;
             } else return $damage;
         }
-
-        public function takeDamage ($damage) {
-            $damage = $this->magicShield($damage);
-            parent::takeDamage($damage);
-        }
     }
 ?>

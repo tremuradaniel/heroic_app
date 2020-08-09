@@ -7,12 +7,12 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
     <title>ORDERUS</title>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
   <body>
+
     <header>
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
@@ -21,20 +21,30 @@
           </a>
         </div>
       </div>
-  </header>
+    </header>
 
   <main role="main">
 
     <section class="jumbotron text-center">
       <div class="container">
-        <h1>Orderus</h1>
-        <p class="lead text-muted">Let's see a battle!</p>
-        <p>
-          <a id="initialize-battle" style="display: none;" class="btn btn-warning my-2">Approach the battle field</a>
-          <a id="start-battle" style="display: none;" class="btn btn-danger my-2">Begin Battle</a>
-          <a id="end-battle" style="display: none;" class="btn btn-dark my-2">Halt the slaughter</a>
-          <a id="repete-battle" style="display: none;" class="btn btn-primary my-2">Next victim!</a>
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <h1>Orderus</h1>
+            <p class="lead text-muted">Let's see a battle!</p>
+            <p>
+              <a id="initialize-battle" style="display: none;" class="btn btn-warning my-2">Approach the battle field</a>
+              <a id="start-battle" style="display: none;" class="btn btn-danger my-2">Begin Battle</a>
+              <a id="end-battle" style="display: none;" class="btn btn-dark my-2">Halt the slaughter</a>
+              <a id="repete-battle" style="display: none;" class="btn btn-primary my-2">Next victim!</a>
+            </p>
+          </div>
+          <div class="col-md-6" id="log-zone" style="display: none;">
+            <div class="form-group">
+              <label for="battleLog">Battle Log</label>
+              <textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>
+            </div>
+          </div>
+        </div>        
       </div>
     </section>
 
@@ -43,7 +53,6 @@
         <div class="row">
           <div class="col-md-6">
             <div class="card mb-4 shadow-sm">
-              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
               <div class="card-body">
                 <h2>Orderus</h2>
                 <div id="hero-stats"></div>
@@ -52,7 +61,6 @@
           </div>
           <div class="col-md-6">
             <div class="card mb-4 shadow-sm">
-              <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
               <div class="card-body">
                 <h2>Beast</h2>
                 <div id="beast-stats"></div>

@@ -11,8 +11,7 @@
             break;
         // play round
         case 1:
-            $warriors = isset($_GET['warriors']) ? $_GET['warriors'] : null;
-            echo battleRound($warriors);
+            echo battleRound();
             break;
         
         default:
@@ -23,18 +22,26 @@
     function initializeBattle() {
         $hero = new Hero('hero');
         $beast = new Fighter('beast');
-        $warriors = json_encode([$hero->traits, $beast->traits]);
-        return $warriors;
+        $battle = new Battle();
+        array_push($battle->outcome['log'], $battle->battleActions['battleStart']);
+        $battle->outcome['warriors'] = [$hero->traits, $beast->traits];
+        return json_encode($battle->outcome);
     }
 
-    function battleRound($warriors) {
-        $warriors = json_decode($warriors);
+    function battleRound() {
+        $warriors = isset($_GET['warriors']) ? json_decode($_GET['warriors']) : null;
+        $round = isset($_GET['round']) ? json_decode($_GET['round']) : null;
+        $wasAttacker = isset($_GET['wasAttacker']) ? json_decode($_GET['wasAttacker']) : null;
         $hero = new Hero(null, $warrior = $warriors[0]);
         $beast = new Fighter(null, $warrior = $warriors[1]);
         $battle = new Battle();
         $battle->warriors = [$hero, $beast];
+        // print_r($battle->warriors);
+        // echo '-000000000000000000000000000000000000';
+        $battle->round = $round;
+        $battle->wasAttacker = $wasAttacker;
         $warriors = json_encode($battle->fightRound());
-        return $warriors;
+        return json_encode($battle->outcome);
     }   
 
     // battleRound('[{"health":97,"strength":71,"defence":49,"speed":40,"luck":29},
