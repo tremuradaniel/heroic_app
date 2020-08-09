@@ -1,5 +1,6 @@
 let state = 0; // initial state
 let displayedStats = [];
+let textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
 $(document).ready(function() {
     console.log( "ready!" );
     stateHandler(state);
@@ -20,6 +21,7 @@ function stateHandler (state) {
             $("#repete-battle").hide();
             $("#log-zone").hide();
             $(".arena").hide();
+            $("#roundCounter").text("-");
             // clear data
             sessionStorage.clear();
             break;
@@ -56,6 +58,7 @@ function stateHandler (state) {
 function setInitializeBattleEventHandler() {
     $("#initialize-battle").click(function() {
         event.preventDefault();
+        $(".form-group").append(textareaLog);
         request = $.ajax({
             url: "battleStates.php?state=0",
             type: "get",
@@ -73,7 +76,7 @@ function setInitializeBattleEventHandler() {
 
 function setStartBattleEventHandler() {
     $round = sessionStorage.getItem("BattleStats") ? 
-        JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 0;
+        JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 1;
     $wasAttacker = sessionStorage.getItem("BattleStats") ? 
         JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
     $("#start-battle").click(function() {
@@ -103,7 +106,7 @@ function setStartBattleEventHandler() {
 function setNextRoundEventHandler() {
     $("#next-round").click(function() {
         $round = sessionStorage.getItem("BattleStats") ? 
-            JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 0;
+            JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 1;
         $wasAttacker = sessionStorage.getItem("BattleStats") ? 
             JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
         event.preventDefault();
@@ -131,7 +134,8 @@ function setNextRoundEventHandler() {
 
 function setPlayAgainEventHandler() {
     $("#battle-again").click(function() {
-        $("#battle-log").val(' ');
+        $("#battle-log").remove();
+        $(".modal-body").empty();
         state = 0;
         stateHandler(state);
     });
@@ -164,7 +168,9 @@ function displayStats (stats) {
 function updateBattleStats(wasAttacker) {
     if (sessionStorage.getItem("BattleStats")) {
         let battleStats = JSON.parse(sessionStorage.getItem("BattleStats"));
+        debugger
         ++battleStats.round;
+        $("#roundCounter").text(battleStats.round);
         battleStats.wasAttacker = wasAttacker;
         sessionStorage.BattleStats = JSON.stringify(battleStats);
     } else {

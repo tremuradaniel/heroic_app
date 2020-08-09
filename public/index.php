@@ -40,8 +40,7 @@
           </div>
           <div class="col-md-6" id="log-zone" style="display: none;">
             <div class="form-group">
-              <label for="battleLog">Battle Log</label>
-              <textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>
+              <label for="battleLog">Battle Log | Round: <span id="roundCounter"></span></label>
             </div>
           </div>
         </div>        
