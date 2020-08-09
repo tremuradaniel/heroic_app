@@ -168,7 +168,6 @@ function displayStats (stats) {
 function updateBattleStats(wasAttacker) {
     if (sessionStorage.getItem("BattleStats")) {
         let battleStats = JSON.parse(sessionStorage.getItem("BattleStats"));
-        debugger
         ++battleStats.round;
         $("#roundCounter").text(battleStats.round);
         battleStats.wasAttacker = wasAttacker;

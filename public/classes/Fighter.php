@@ -53,9 +53,12 @@
             return $traits->strength;
         }
 
-        public function takeDamage ($damage) {
+        public function takeDamage ($attackerStrength) {
             if (isset($this->traits->health)) {
-                $this->traits->health -= $damage - $this->traits->defence;
+                $damage = $attackerStrength - $this->traits->defence;
+                if ($damage > 0) {
+                    $this->traits->health -= $damage;
+                }
             }
         }
     }

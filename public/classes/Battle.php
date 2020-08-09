@@ -121,12 +121,12 @@
                 // BEAST attacks
                 if (!$this->thatWasACloseOne($defender->traits->luck)) {
                     $attackerStrength = isset($attacker->traits->strength) ? $attacker->traits->strength : 0;
-                    $damage = $defender->magicShield($attackerStrength);
-                    $loggedDamage = $damage - $defender->traits->defence;
-                    $loggedDamage = $loggedDamage < 0 ? 0 : $loggedDamage;
-                    $this->logDivineShield($attackerStrength, $damage);
-                    $defender->takeDamage($damage);
-                    $this->logBattle($this->battleActions['beastHit'] . $loggedDamage);
+                    $initialDamage = $attackerStrength - $defender->traits->defence;
+                    $actualDamage = $defender->takeDamage($attackerStrength);
+                    if ($initialDamage !== $actualDamage) {
+                        $this->logBattle($this->battleActions['heroSpecialDefence']);
+                    }
+                    $this->logBattle($this->battleActions['beastHit'] . ($actualDamage > 0 ? $actualDamage : 0));
                 } else {
                     $this->logBattle($this->battleActions['heroLuck']);
                 }
@@ -156,10 +156,5 @@
             array_push($this->outcome['log'], $message);
         }
 
-        private function logDivineShield($initialDamage, $damageAgainstTheShield) {
-            if ($initialDamage !== $damageAgainstTheShield) {
-                $this->logBattle($this->battleActions['heroSpecialDefence']);
-            }
-        }
     }
 ?>
