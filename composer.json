@@ -12,5 +12,8 @@
         "classmap": [
             "public/classes"
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "8"
     }
 }
