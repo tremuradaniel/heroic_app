@@ -4,7 +4,6 @@
         public $maxRound = 20;
         public $stage;
         public $round;
-        public $isAttacker;
         public $warriors = [];
         public $hero = null;
         public $beast = null;
@@ -19,19 +18,30 @@
         public $battleActions = [
             'battleStart' => 'The fight is about to begin!',
             'battleEnd' => 'The fight has ended!',
+            'heroFallen' => 'The mighty Orderus has fallen!',
+            'beastSlayed' => 'The Beast has been slayed!',
             'beastFirst' => 'The Beast is more agile and strikes first!',
             'heroFirst' => 'Orderus is more agile and strikes first!',
             'beastLuck' => 'The Beast is lucky and avoids a devastating blow!',
             'heroLuck' => 'Orderus is lucky and avoids a devastating blow!',
             'beastHit' => 'The Beast hits Orderus! Damage done: ',
             'heroHit' => 'Orderus hits the Beast! Damage done: ',
-            'heroSpecialDefence' => 'Orderus uses his shield and gets half the damage! Damage done: ',
+            'heroSpecialDefence' => 'Orderus uses his shield and gets half the damage!',
             'heroSpecialAttack' => 'Orderus manages to get an extra hit!',
         ];
 
         
-        function isStillAlive () {
-
+        function isStillAlive ($evaluatedWarrior) {
+            
+            if ($evaluatedWarrior && isset($evaluatedWarrior->traits->health)) {
+                if (!($evaluatedWarrior->traits->health > 0)) {
+                    $this->outcome['winner'] = $evaluatedWarrior instanceof Hero ? 'beast' : 'hero';
+                    if ($this->outcome['winner'] === 'hero') {
+                        $this->logBattle($this->battleActions['beastSlayed']);
+                    } else $this->logBattle($this->battleActions['heroFallen']);
+                    $this->logBattle($this->battleActions['battleEnd']);
+                }
+            }
         }
 
         function whoGoesFirst () {
@@ -85,10 +95,11 @@
             $this->hero = $this->warriors[0];
             $this->beast = $this->warriors[1];
             $attacker;
+            $defender;
             if ($this->round === 0) {
                 $attacker = $this->whoGoesFirst();
             } else {
-                $attacker = $this->isAttacker;
+                $attacker = $this->outcome['wasAttacker'] === 'hero' ? $this->beast : $this->hero;
             }
             $defender = $attacker instanceof Hero ? $this->beast : $this->hero;
             if ($attacker instanceof Hero) {
@@ -99,7 +110,8 @@
                     $defenderLuck = isset($defender->traits->luck) ? $defender->traits->luck : 0;
                     if (!$this->thatWasACloseOne($defenderLuck)) {
                         $attackerStrength = isset($attacker->traits->strength) ? $attacker->traits->strength : 0;
-                        $this->logBattle($this->battleActions['heroHit'] . $attackerStrength);
+                        $damage = $attackerStrength - $defender->traits->defence;
+                        $this->logBattle($this->battleActions['heroHit'] . $damage);
                         $defender->takeDamage($attackerStrength);
                     } else {
                         $this->logBattle($this->battleActions['beastLuck']);
@@ -110,18 +122,19 @@
                 if (!$this->thatWasACloseOne($defender->traits->luck)) {
                     $attackerStrength = isset($attacker->traits->strength) ? $attacker->traits->strength : 0;
                     $damage = $defender->magicShield($attackerStrength);
+                    $loggedDamage = $damage - $defender->traits->defence;
+                    $loggedDamage = $loggedDamage < 0 ? 0 : $loggedDamage;
                     $this->logDivineShield($attackerStrength, $damage);
                     $defender->takeDamage($damage);
-                    $this->logBattle($this->battleActions['beastHit'] . $damage);
+                    $this->logBattle($this->battleActions['beastHit'] . $loggedDamage);
                 } else {
                     $this->logBattle($this->battleActions['heroLuck']);
                 }
             }
-            // echo ' $this->outcome ----------------------------------------------';
-            // print_r($this->outcome);
-            // echo ' $this->outcome- ----------------------------------------------';
             $this->outcome['warriors'] = [$this->hero->traits, $this->beast->traits];
+           
             $this->outcome['wasAttacker'] = $attacker instanceof Hero ? 'hero' : 'beast';
+            $this->isStillAlive($defender);
             return $this->outcome;
         }
 

@@ -34,8 +34,8 @@
             <p>
               <a id="initialize-battle" style="display: none;" class="btn btn-warning my-2">Approach the battle field</a>
               <a id="start-battle" style="display: none;" class="btn btn-danger my-2">Begin Battle</a>
-              <a id="end-battle" style="display: none;" class="btn btn-dark my-2">Halt the slaughter</a>
-              <a id="repete-battle" style="display: none;" class="btn btn-primary my-2">Next victim!</a>
+              <a id="battle-again" style="display: none;" class="btn btn-dark my-2">Continue the slaughter</a>
+              <a id="next-round" style="display: none;" class="btn btn-dark my-2">Next round</a>
             </p>
           </div>
           <div class="col-md-6" id="log-zone" style="display: none;">
@@ -70,6 +70,21 @@
         </div>
       </div>
     </div>
+
+  <!-- Modal -->
+  <div class="modal fade show" id="endingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">The battle is over!</h5>
+        </div>
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   </main>
   <!-- JS, Popper.js, and jQuery -->

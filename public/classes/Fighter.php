@@ -55,7 +55,7 @@
 
         public function takeDamage ($damage) {
             if (isset($this->traits->health)) {
-                $this->traits->health -= $damage;
+                $this->traits->health -= $damage - $this->traits->defence;
             }
         }
     }

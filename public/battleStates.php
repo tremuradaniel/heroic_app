@@ -31,15 +31,13 @@
     function battleRound() {
         $warriors = isset($_GET['warriors']) ? json_decode($_GET['warriors']) : null;
         $round = isset($_GET['round']) ? json_decode($_GET['round']) : null;
-        $wasAttacker = isset($_GET['wasAttacker']) ? json_decode($_GET['wasAttacker']) : null;
+        $wasAttacker = isset($_GET['wasAttacker']) ? $_GET['wasAttacker'] : null;
         $hero = new Hero(null, $warrior = $warriors[0]);
         $beast = new Fighter(null, $warrior = $warriors[1]);
         $battle = new Battle();
         $battle->warriors = [$hero, $beast];
-        // print_r($battle->warriors);
-        // echo '-000000000000000000000000000000000000';
         $battle->round = $round;
-        $battle->wasAttacker = $wasAttacker;
+        $battle->outcome['wasAttacker'] = $wasAttacker;
         $warriors = json_encode($battle->fightRound());
         return json_encode($battle->outcome);
     }   
