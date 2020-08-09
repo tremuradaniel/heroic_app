@@ -11,7 +11,8 @@
             'log' => [],
             'round' => 0,
             'wasAttacker' => null,
-            'winnner' => null
+            'winnner' => null,
+            'draw' => null
         ];
         public $battleLog = [];
         public $battleActions = [
@@ -27,6 +28,7 @@
             'heroHit' => 'Orderus hits the Beast! Damage done: ',
             'heroSpecialDefence' => 'Orderus uses his shield and gets half the damage!',
             'heroSpecialAttack' => 'Orderus manages to get an extra hit!',
+            'draw' => 'It\'s a draw! Game over.'
         ];
         
         function isStillAlive ($evaluatedWarrior) {            
@@ -89,6 +91,11 @@
         }
 
         function fightRound () {
+            if ($this->outcome['round'] >= $this->maxRound) {
+                $this->outcome['draw'] = true;
+                $this->logBattle($this->battleActions['draw']);
+                return $this->outcome;
+            }
             $this->hero = $this->warriors[0];
             $this->beast = $this->warriors[1];
             $attacker;

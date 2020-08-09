@@ -75,9 +75,8 @@ function setInitializeBattleEventHandler() {
 }
 
 function setStartBattleEventHandler() {
-    $round = sessionStorage.getItem("BattleStats") ? 
-        JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 1;
-    $wasAttacker = sessionStorage.getItem("BattleStats") ? 
+    let round = 1;
+    let wasAttacker = sessionStorage.getItem("BattleStats") ? 
         JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
     $("#start-battle").click(function() {
         event.preventDefault();
@@ -86,8 +85,8 @@ function setStartBattleEventHandler() {
             type: "get",
             data: { 
                 'warriors': sessionStorage.getItem("Warriors"),
-                'round' : $round,
-                'wasAttacker': $wasAttacker
+                'round' : round,
+                'wasAttacker': wasAttacker
             },
             success: function(data) {
                 console.log(data);
@@ -115,19 +114,19 @@ function setNextRoundEventHandler() {
             type: "get",
             data: { 
                 'warriors': sessionStorage.getItem("Warriors"),
-                'round' : $round,
+                'round' : ++$round,
                 'wasAttacker': $wasAttacker
             },
             success: function(data) {
                 console.log(data);
                 let returnedData = JSON.parse(data);
-                populateArena(returnedData['warriors']);
                 updateBattleStats(returnedData['wasAttacker']);
                 updateBattleLog(returnedData['log']);
                 endOfBattle(returnedData['winner'], returnedData['log'].slice(-2));
+                if (!returnedData['draw']) populateArena(returnedData['warriors']);
+                else declareDraw(returnedData);
             }
         });
-        // state = 2;
         stateHandler(state);
     });
 }
@@ -168,15 +167,14 @@ function displayStats (stats) {
 function updateBattleStats(wasAttacker) {
     if (sessionStorage.getItem("BattleStats")) {
         let battleStats = JSON.parse(sessionStorage.getItem("BattleStats"));
-        ++battleStats.round;
-        $("#roundCounter").text(battleStats.round);
+        let round = ++battleStats.round;
+        $("#roundCounter").text(round);
         battleStats.wasAttacker = wasAttacker;
         sessionStorage.BattleStats = JSON.stringify(battleStats);
     } else {
         sessionStorage.BattleStats = JSON.stringify({
-            round: 1,
-            wasAttacker: wasAttacker
-
+            wasAttacker: wasAttacker,
+            round: 0
         });
     }
 }
@@ -192,7 +190,12 @@ function endOfBattle(winner, logs) {
         let modalText = logs.map(log => "<p>" + log +"</p>")
         $('.modal-body').append(modalText);
         $('#endingModal').modal('show');
-        state = 3;
-        stateHandler(state);
+        stateHandler(state = 3);
     }
+}
+
+function declareDraw(data) {
+    $('.modal-body').append(data['log']);
+    $('#endingModal').modal('show');
+    stateHandler(state = 3);
 }
