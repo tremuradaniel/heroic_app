@@ -174,7 +174,7 @@ function updateBattleStats(wasAttacker) {
         sessionStorage.BattleStats = JSON.stringify(battleStats);
     } else {
         sessionStorage.BattleStats = JSON.stringify({
-            round: 0,
+            round: 1,
             wasAttacker: wasAttacker
 
         });

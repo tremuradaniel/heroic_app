@@ -3,7 +3,6 @@
         // Properties
         public $maxRound = 20;
         public $stage;
-        public $round;
         public $warriors = [];
         public $hero = null;
         public $beast = null;
@@ -29,10 +28,8 @@
             'heroSpecialDefence' => 'Orderus uses his shield and gets half the damage!',
             'heroSpecialAttack' => 'Orderus manages to get an extra hit!',
         ];
-
         
-        function isStillAlive ($evaluatedWarrior) {
-            
+        function isStillAlive ($evaluatedWarrior) {            
             if ($evaluatedWarrior && isset($evaluatedWarrior->traits->health)) {
                 if (!($evaluatedWarrior->traits->health > 0)) {
                     $this->outcome['winner'] = $evaluatedWarrior instanceof Hero ? 'beast' : 'hero';
@@ -96,7 +93,7 @@
             $this->beast = $this->warriors[1];
             $attacker;
             $defender;
-            if ($this->round === 0) {
+            if ($this->outcome['round'] === 1) {
                 $attacker = $this->whoGoesFirst();
             } else {
                 $attacker = $this->outcome['wasAttacker'] === 'hero' ? $this->beast : $this->hero;
