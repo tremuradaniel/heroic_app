@@ -1,3 +1,4 @@
+# prevent directory listing on root url
 <IfModule mod_rewrite.c>
   RewriteEngine on
   RewriteRule ^$ public/ [L]

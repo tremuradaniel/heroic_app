@@ -1,1 +1,2 @@
+# prevent folder structure from being seen in the browser
 Options -Indexes
