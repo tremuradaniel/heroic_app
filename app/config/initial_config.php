@@ -1,4 +1,6 @@
 <?php
+    // Rename to config.php in order to use
+
     // App Root
     define('APPROOT', dirname(dirname(__FILE__)));
     // URL Root
