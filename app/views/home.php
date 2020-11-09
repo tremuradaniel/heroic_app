@@ -8,7 +8,7 @@
                 <h1>Orderus</h1>
                 <p class="lead text-muted">Let's see a battle!</p>
                 <p>
-                    <a href="/battle/show" class="btn btn-warning my-2"
+                    <a href="/battles/show" class="btn btn-warning my-2"
                     >Approach the battle field</a>
                 </p>
             </div>      

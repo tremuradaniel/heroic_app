@@ -1,8 +1,7 @@
 <?php
     // Load config
     require_once 'config/config.php';
+    // helpers
+    require_once 'helpers/combatant.helper.php';
 
-    // Autoload Core Libraries
-    spl_autoload_register(function($className) {
-        require_once 'libraries/' . $className . '.php';
-    });
+    require '../vendor/autoload.php';

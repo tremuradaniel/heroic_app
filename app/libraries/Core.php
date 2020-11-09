@@ -7,13 +7,14 @@
 */
 
 class Core {
-    protected $currentController = 'Home';
-    protected $currentMethod = 'index';
+    protected $currentController;
+    protected $currentMethod;
     protected $params = [];
 
     public function __construct(){
-        // print_r( $this->getUrl());
         $url = $this->getUrl();
+        if ($this->isHome($url)) return require_once('../app/views/home.php');
+
         // Look in controllers for first value
 
         // define the location of the file as if it was relative to 
@@ -24,7 +25,7 @@ class Core {
             $this->currentController = ucwords($url[0]);
             // Unset 0 Index
             unset($url[0]);
-        }
+        } else return require_once('../app/views/404.php');
         // Require the controller
         require_once '../app/controllers/' . $this->currentController . '.php';
         // Instantiate controller class
@@ -48,13 +49,29 @@ class Core {
             $this->params
         );
     }
-
+    
+    /**
+     * getUrl
+     *
+     * @return array
+     */
     public function getUrl(){
         if(isset($_GET['url'])){
             $url = rtrim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
             return $url;
-        }
+        } else return [];
+    }
+        
+            
+    /**
+     * isHome
+     *
+     * @param  array $url
+     * @return bool
+     */
+    private function isHome (Array $url) {
+        return count($url) === 0;
     }
 }

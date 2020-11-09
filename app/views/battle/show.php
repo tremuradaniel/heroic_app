@@ -4,9 +4,11 @@
     <section class="jumbotron text-center">
         <div class="container">
             <div class="row">
-            <div class="col-md-12">
-                <h1>Orderus</h1>
-            </div>      
+                <div class="col-md-12">
+                    <h1>Orderus</h1>
+                    <?php print_r($data) ; ?>
+                </div>
+            </div>   
         </div>
     </section>
 </main>
