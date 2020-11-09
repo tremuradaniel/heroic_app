@@ -10,7 +10,8 @@
     "require": {},
     "autoload": {
         "classmap": [
-            "public/classes"
+            "app/controllers",
+            "app/libraries"
         ]
     },
     "require-dev": {
