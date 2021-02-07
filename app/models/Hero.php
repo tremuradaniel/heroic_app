@@ -8,7 +8,7 @@
 
         public function getHeroSkillsIntervals()
         {
-            $sql = getCombatantSkillsInteravalQuerry('hero');
+            $sql = getCombatantTraitsInteravalQuerry('hero');
             $this->db->query($sql);
             $results = $this->db->resultSet();
             return $results;
