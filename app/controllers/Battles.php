@@ -4,7 +4,7 @@
         public $log = [];
         public function __construct()
         {
-            $this->hero = new Heros();
+            $this->hero = new Heroes();
         }
 
         public function show(): void

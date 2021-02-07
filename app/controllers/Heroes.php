@@ -1,6 +1,6 @@
 <?php
 
-    class Heros extends Controller {
+    class Heroes extends Controller {
 
 
         public function __construct()
