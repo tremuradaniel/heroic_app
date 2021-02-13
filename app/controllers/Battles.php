@@ -1,7 +1,9 @@
 <?php
     class Battles extends Controller {
+
         public const MAX_ROUND = 20;
         public $log = [];
+
         public function __construct()
         {
             $this->hero = new Heroes();
@@ -13,4 +15,5 @@
                 'data' => $this->hero
             ]);
         }
+        
     }

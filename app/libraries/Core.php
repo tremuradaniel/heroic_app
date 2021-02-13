@@ -76,4 +76,5 @@ class Core {
     private function isHome (Array $url) {
         return count($url) === 0;
     }
+
 }

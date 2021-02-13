@@ -1,5 +1,6 @@
 <?php
     class Hero {
+        
         private $db;
         public function __construct()
         {

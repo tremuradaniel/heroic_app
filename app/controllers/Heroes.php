@@ -5,8 +5,8 @@
 
         public function __construct()
         {
-            $this->heroPost = $this->model('hero');
-            $this->traits = $this->heroPost->getHeroSkillsIntervals();
+            $this->heroModel = $this->model('hero');
+            $this->traits = $this->heroModel->getHeroSkillsIntervals();
         }
 
     }

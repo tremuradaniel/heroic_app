@@ -5,8 +5,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Orderus</h1>
-                    <?php print_r($data) ; ?>
+                    <h1>Battle Field</h1>
+                    <div class="arena py-5 bg-light">
+                        <div class="container">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <h2>Orderus</h2>
+                                    <div id="hero-stats"></div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <h2>Beast</h2>
+                                    <div id="beast-stats"></div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>   
         </div>
