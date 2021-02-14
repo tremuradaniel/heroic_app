@@ -6,7 +6,14 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1>Battle Field</h1>
-                    <div class="arena py-5 bg-light">
+                    <p class="lead text-muted">Let's see a battle!</p>
+                    <p>
+                        <a id="initialize-battle" style="display: none;" class="btn btn-warning my-2">Approach the battle field</a>
+                        <a id="start-battle" style="display: none;" class="btn btn-danger my-2">Begin Battle</a>
+                        <a id="battle-again" style="display: none;" class="btn btn-dark my-2">Continue the slaughter</a>
+                        <a id="next-round" style="display: none;" class="btn btn-dark my-2">Next round</a>
+                    </p>
+                    <div class="arena py-5 bg-light" style="display: none;">
                         <div class="container">
                             <div class="row">
                             <div class="col-md-6">

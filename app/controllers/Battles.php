@@ -11,9 +11,17 @@
 
         public function show(): void
         {
-            $this->view('battle/show', [
-                'data' => $this->hero
-            ]);
+            $this->view('battle/show');
+        }
+
+        public function initializeBattle ()
+        {
+            $data = new stdClass();
+            $data->combatants = [
+                'hero' => [$this->hero->traits],
+                'beast' => []
+            ];
+            echo json_encode($data);
         }
         
     }

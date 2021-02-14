@@ -1,15 +1,16 @@
 $(document).ready(function() {
-    let battle = new Battle();
+    new Battle(0);
 });
 
-class Battle { 
-    constructor() {
+class Battle {
+    
+    constructor (state) {
+        this.state = state; // initial state
+        this.displayedStats = [];
+        this.textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
         console.log( "ready!" );
-        let state = 1; // initial state
-        let displayedStats = [];
-        let textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
-        this.stateHandler(state);
-        this.setInitializeBattleEventHandler();     
+        this.stateHandler(this.state);
+        this.setInitializeBattleEventHandler(this);     
         this.setStartBattleEventHandler();
         this.setNextRoundEventHandler();
         this.setPlayAgainEventHandler();
@@ -60,33 +61,35 @@ class Battle {
         }
     }
     
-    setInitializeBattleEventHandler() {
+    setInitializeBattleEventHandler(classThis) {
         $("#initialize-battle").click(function() {
             event.preventDefault();
-            $(".form-group").append(textareaLog);
-            request = $.ajax({
-                url: "battleStates.php?state=0",
+            $(".form-group").append(this.textareaLog);
+            $.ajax({
+                url: "/battles/initializeBattle",
                 type: "get",
                 data: [],
                 success: function(data) {
                     let returnedData = JSON.parse(data);
-                    populateArena(returnedData['warriors']);
-                    updateBattleStats();
-                    updateBattleLog(returnedData['log']);
+                    let battle = new Battle();
+                    battle.populateArena(returnedData);
+                    // updateBattleStats();
+                    // updateBattleLog(returnedData['log']);
                 }
             });
-            stateHandler(state = 1);
+            new Battle(1);
         });
     }
     
     setStartBattleEventHandler() {
+        console.log('setStartBattleEventHandler')
         let round = 1;
         let wasAttacker = sessionStorage.getItem("BattleStats") ? 
             JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
         $("#start-battle").click(function() {
             event.preventDefault();
-            request = $.ajax({
-                url: "battleStates.php?state=1",
+            let request = $.ajax({
+                url: "/battles/setupRound/1",
                 type: "get",
                 data: { 
                     'warriors': sessionStorage.getItem("Warriors"),
@@ -100,10 +103,13 @@ class Battle {
                     updateBattleStats(returnedData['wasAttacker']);
                     updateBattleLog(returnedData['log']);
                     endOfBattle(returnedData['winner']);
+                },
+                error: function(data) {
+                    console.error(data)
                 }
             });
-            state = 2;
-            stateHandler(state);
+            new Battle(2) //this.state = 2;
+            // this.stateHandler(this.state);
         });
     }
     
@@ -148,12 +154,15 @@ class Battle {
     populateArena(data) {
         let stats = JSON.stringify(data);
         sessionStorage.Warriors = stats;
-        displayStats(data);
+        this.displayStats(data);
     }
     
-    displayStats (stats) {
+    displayStats (data) {
+        let combatants = data['combatants'];
+        let stats = [combatants['hero'][0]];
+
         $(".table").remove();
-        displayedStats = [];
+        this.displayedStats = [];
         stats.map(stat => {
             let list = "<table class='table' style='color: white'>";
             for (let [key, value] of Object.entries(stat)) {
@@ -163,10 +172,10 @@ class Battle {
                         "</tr>";
             }
             list += "</table>";
-            displayedStats.push(list);
+            this.displayedStats.push(list);
         });
-        $('#hero-stats').append(displayedStats[0]);
-        $('#beast-stats').append(displayedStats[1]);
+        $('#hero-stats').append(this.displayedStats[0]);
+        $('#beast-stats').append(this.displayedStats[1]);
     }
     
     updateBattleStats(wasAttacker) {
@@ -206,4 +215,3 @@ class Battle {
     }
 
 }
-
