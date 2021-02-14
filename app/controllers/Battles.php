@@ -7,6 +7,7 @@
         public function __construct()
         {
             $this->hero = new Heroes();
+            $this->beast = new Beasts();
         }
 
         public function show(): void
@@ -19,7 +20,7 @@
             $data = new stdClass();
             $data->combatants = [
                 'hero' => [$this->hero->traits],
-                'beast' => []
+                'beast' => [$this->beast->traits]
             ];
             echo json_encode($data);
         }
