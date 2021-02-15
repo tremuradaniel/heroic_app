@@ -3,17 +3,17 @@ $(document).ready(function() {
 });
 
 class Battle {
-    
+      
     constructor (state) {
+        console.log( "ready!" );
         this.state = state; // initial state
         this.displayedStats = [];
         this.textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
-        console.log( "ready!" );
         this.stateHandler(this.state);
         this.setInitializeBattleEventHandler();     
-        // this.setStartBattleEventHandler();
-        // this.setNextRoundEventHandler();
-        // this.setPlayAgainEventHandler();
+        this.setStartBattleEventHandler();
+        this.setNextRoundEventHandler();
+        this.setPlayAgainEventHandler();
     }
     
     stateHandler (state) {
@@ -27,7 +27,6 @@ class Battle {
                 $("#repete-battle").hide();
                 $("#log-zone").hide();
                 $(".arena").hide();
-                $("#roundCounter").text("-");
                 // clear data
                 sessionStorage.clear();
                 break;
@@ -39,6 +38,7 @@ class Battle {
                 $("#initialize-battle").hide();
                 $("#end-battle").hide();
                 $("#repete-battle").hide();
+                $("#roundCounter").text("-");
                 break;
             case 2:
                 // new round
@@ -61,25 +61,20 @@ class Battle {
         }
     }
     
-    setInitializeBattleEventHandler(classThis) {
-        // $("#initialize-battle").click(function() {
-            // event.preventDefault();
-            $(".form-group").append(this.textareaLog);
-            let thisClassBattle = this
-            $.ajax({
-                url: "/battles/initializeBattle",
-                type: "get",
-                data: [],
-                success: function(data) {
-                    let returnedData = JSON.parse(data);
-                    // let battle = new Battle();
-                    thisClassBattle.populateArena(returnedData);
-                    // updateBattleStats();
-                    // updateBattleLog(returnedData['log']);
-                }
-            });
-            // new Battle(1);
-        // });
+    setInitializeBattleEventHandler() {
+        $(".form-group").append(this.textareaLog);
+        let thisClassBattle = this
+        $.ajax({
+            url: "/battles/initializeBattle",
+            type: "get",
+            data: [],
+            success: function(data) {
+                let returnedData = JSON.parse(data);
+                thisClassBattle.populateArena(returnedData);
+                // updateBattleStats();
+                thisClassBattle.updateBattleLog(returnedData);
+            }
+        });
     }
     
     setStartBattleEventHandler() {
@@ -194,7 +189,9 @@ class Battle {
         }
     }
     
-    updateBattleLog (logs) {
+    updateBattleLog (data) {
+        let logs = [];
+        if (data?.battle?.log.length) logs = data.battle.log;
         for (let log of logs) {
             $('#battle-log').append('- ' + log + '\n');
         }
