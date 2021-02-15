@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    new Battle(0);
+    if (window.location.pathname === '/battles/show') new Battle(1);
 });
 
 class Battle {
@@ -10,10 +10,10 @@ class Battle {
         this.textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
         console.log( "ready!" );
         this.stateHandler(this.state);
-        this.setInitializeBattleEventHandler(this);     
-        this.setStartBattleEventHandler();
-        this.setNextRoundEventHandler();
-        this.setPlayAgainEventHandler();
+        this.setInitializeBattleEventHandler();     
+        // this.setStartBattleEventHandler();
+        // this.setNextRoundEventHandler();
+        // this.setPlayAgainEventHandler();
     }
     
     stateHandler (state) {
@@ -62,23 +62,24 @@ class Battle {
     }
     
     setInitializeBattleEventHandler(classThis) {
-        $("#initialize-battle").click(function() {
-            event.preventDefault();
+        // $("#initialize-battle").click(function() {
+            // event.preventDefault();
             $(".form-group").append(this.textareaLog);
+            let thisClassBattle = this
             $.ajax({
                 url: "/battles/initializeBattle",
                 type: "get",
                 data: [],
                 success: function(data) {
                     let returnedData = JSON.parse(data);
-                    let battle = new Battle();
-                    battle.populateArena(returnedData);
+                    // let battle = new Battle();
+                    thisClassBattle.populateArena(returnedData);
                     // updateBattleStats();
                     // updateBattleLog(returnedData['log']);
                 }
             });
-            new Battle(1);
-        });
+            // new Battle(1);
+        // });
     }
     
     setStartBattleEventHandler() {
