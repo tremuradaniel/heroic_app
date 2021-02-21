@@ -16,11 +16,13 @@
          *
          * @return void
         */
-        public function __construct()
+        public function __construct($initialize)
         {
             $this->heroModel = $this->model('hero');
-            $traitsIntervals = $this->heroModel->getHeroSkillsIntervals();
-            $this->setHeroTraits($traitsIntervals);
+            if ($initialize) {
+                $traitsIntervals = $this->heroModel->getHeroSkillsIntervals();
+                $this->setHeroTraitsFromRanges($traitsIntervals);
+            }
         }
                 
         /**
@@ -29,7 +31,7 @@
          * @param  array $ranges
          * @return void
         */
-        private function setHeroTraits ($ranges) {
+        private function setHeroTraitsFromRanges ($ranges) {
             $index = 0;
             foreach ($this->traits as $key => $value) {
                 $currTraitInterval = array_filter($ranges, function ($elem) use($key) {
@@ -41,5 +43,17 @@
                 $index++;
             }
         }
+        
+        /**
+         * setHeroTraits
+         *
+         * @param  mixed $array
+         * @return void
+         */
+        public function setTraits ($array) {
+            $this->traits = $array;
+        }
+
+
 
     }

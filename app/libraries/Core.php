@@ -43,7 +43,7 @@ class Core {
         
         // get params
         $this->params = $url ? array_values($url) : [];
-        
+
         // Call a callback with array of params
         if (method_exists($this->currentController, $this->currentMethod)) 
             call_user_func_array(

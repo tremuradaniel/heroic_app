@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    if (window.location.pathname === '/battles/show') new Battle(1);
+    let correctPage = window.location.pathname === '/battles/show';
+    if (correctPage) new Battle(1);
 });
 
 class Battle {
@@ -10,7 +11,7 @@ class Battle {
         this.displayedStats = [];
         this.textareaLog = `<textarea disabled class="form-control" id="battle-log" rows="7" cols="50" style='resize:none; width:600px'></textarea>`;
         this.stateHandler(this.state);
-        this.setInitializeBattleEventHandler();     
+        if (state === 1) this.setInitializeBattleEventHandler();     
         this.setStartBattleEventHandler();
         this.setNextRoundEventHandler();
         this.setPlayAgainEventHandler();
@@ -18,20 +19,20 @@ class Battle {
     
     stateHandler (state) {
         switch (state) {
-            case 0:
-                // set initial state
-                $("#initialize-battle").show();
-                $("#battle-again").hide();
-                $("#start-battle").hide();
-                $("#end-battle").hide();
-                $("#repete-battle").hide();
-                $("#log-zone").hide();
-                $(".arena").hide();
-                // clear data
-                sessionStorage.clear();
-                break;
+            // case 0:
+            //     // set initial state
+            //     $("#initialize-battle").show();
+            //     $("#battle-again").hide();
+            //     $("#start-battle").hide();
+            //     $("#end-battle").hide();
+            //     $("#repete-battle").hide();
+            //     $("#log-zone").hide();
+            //     $(".arena").hide();
+            //     // clear data
+            //     sessionStorage.clear();
+            //     break;
             case 1:
-                // battle begins - 1 round
+                // prepare battle
                 $("#start-battle").show();
                 $(".arena").show();
                 $("#log-zone").show();
@@ -67,11 +68,10 @@ class Battle {
         $.ajax({
             url: "/battles/initializeBattle",
             type: "get",
-            data: [],
+            data: { 'initialize': true },
             success: function(data) {
                 let returnedData = JSON.parse(data);
                 thisClassBattle.populateArena(returnedData);
-                // updateBattleStats();
                 thisClassBattle.updateBattleLog(returnedData);
             }
         });
@@ -79,23 +79,20 @@ class Battle {
     
     setStartBattleEventHandler() {
         console.log('setStartBattleEventHandler')
-        let round = 1;
-        let wasAttacker = sessionStorage.getItem("BattleStats") ? 
-            JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
-        $("#start-battle").click(function() {
+        // let round = 1;
+        // let wasAttacker = sessionStorage.getItem("BattleStats") ? 
+        //     JSON.parse(sessionStorage.getItem("BattleStats"))['wasAttacker'] : null;
+        $("#start-battle").click(function(event) {
             event.preventDefault();
-            let request = $.ajax({
-                url: "/battles/setupRound/1",
+            $.ajax({
+                url: `/battles/triggerRound`,
                 type: "get",
-                data: { 
-                    'warriors': sessionStorage.getItem("Warriors"),
-                    'round' : round,
-                    'wasAttacker': wasAttacker
-                },
+                data: { 'battleStats': sessionStorage.getItem("battleStats") },
                 success: function(data) {
                     console.log(data);
+                    debugger
                     let returnedData = JSON.parse(data);
-                    populateArena(returnedData['warriors']);
+                    // populateArena(returnedData['warriors']);
                     updateBattleStats(returnedData['wasAttacker']);
                     updateBattleLog(returnedData['log']);
                     endOfBattle(returnedData['winner']);
@@ -104,13 +101,12 @@ class Battle {
                     console.error(data)
                 }
             });
-            new Battle(2) //this.state = 2;
-            // this.stateHandler(this.state);
+            new Battle(2);
         });
     }
     
     setNextRoundEventHandler() {
-        $("#next-round").click(function() {
+        $("#next-round").click(function(event) {
             $round = sessionStorage.getItem("BattleStats") ? 
                 JSON.parse(sessionStorage.getItem("BattleStats"))['round'] : 1;
             $wasAttacker = sessionStorage.getItem("BattleStats") ? 
@@ -120,9 +116,7 @@ class Battle {
                 url: "battleStates.php?state=1",
                 type: "get",
                 data: { 
-                    'warriors': sessionStorage.getItem("Warriors"),
-                    'round' : ++$round,
-                    'wasAttacker': $wasAttacker
+                    'battleStats': sessionStorage.getItem("battleStats")
                 },
                 success: function(data) {
                     console.log(data);
@@ -130,8 +124,8 @@ class Battle {
                     updateBattleStats(returnedData['wasAttacker']);
                     updateBattleLog(returnedData['log']);
                     endOfBattle(returnedData['winner'], returnedData['log'].slice(-2));
-                    if (!returnedData['draw']) populateArena(returnedData['warriors']);
-                    else declareDraw(returnedData);
+                    // if (!returnedData['draw']) populateArena(returnedData['warriors']);
+                    // else declareDraw(returnedData);
                 }
             });
             stateHandler(state);
@@ -149,7 +143,7 @@ class Battle {
     
     populateArena(data) {
         let stats = JSON.stringify(data);
-        sessionStorage.Warriors = stats;
+        sessionStorage.battleStats = stats;
         this.displayStats(data);
     }
     

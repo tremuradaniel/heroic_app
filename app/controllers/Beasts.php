@@ -16,11 +16,13 @@
          *
          * @return void
         */
-        public function __construct()
+        public function __construct($initialize)
         {
             $this->beastModel = $this->model('beast');
-            $traitsIntervals = $this->beastModel->getBeastSkillsIntervals();
-            $this->setBeastTraits($traitsIntervals);
+            if ($initialize) {
+                $traitsIntervals = $this->beastModel->getBeastSkillsIntervals();
+                $this->setBeastTraitsFromRanges($traitsIntervals);
+            }
         }
                 
         /**
@@ -29,7 +31,7 @@
          * @param  array $ranges
          * @return void
         */
-        private function setBeastTraits ($ranges) {
+        private function setBeastTraitsFromRanges ($ranges) {
             $index = 0;
             foreach ($this->traits as $key => $value) {
                 $currTraitInterval = array_filter($ranges, function ($elem) use($key) {
@@ -40,6 +42,16 @@
                 $this->traits[$key] = random_int($currMinTrait, $currMaxTrait);
                 $index++;
             }
+        }
+
+        /**
+         * setBeastTraits
+         *
+         * @param  mixed $array
+         * @return void
+        */
+        public function setTraits ($array) {
+            $this->traits = $array;
         }
 
     }
