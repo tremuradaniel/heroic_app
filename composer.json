@@ -11,7 +11,8 @@
     "autoload": {
         "classmap": [
             "app/controllers",
-            "app/libraries"
+            "app/libraries",
+            "app/helpers"
         ]
     },
     "require-dev": {

@@ -74,7 +74,8 @@
                 return;
             }
             if ($this->round === 0) $this->determineWhoHasFirstBlow();
-            $this->runRound();
+            $result = $this->runRound();
+            echo json_encode($result);
         }
 
         private function setCurrRoundNumber ($data) {
@@ -110,7 +111,9 @@
         }
 
         private function runRound () {
-
+            $combat = new Combat($this->battleStats, $this->hero);
+            $roundResuls = $combat->initializeCombat();
+            return $roundResuls;
         }
 
         private function setCombatantsStats ($data) {

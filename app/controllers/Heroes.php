@@ -10,6 +10,8 @@
             'speed' => null,
             'luck' => null
         ];
+
+        public $usedSepcialAttack = false;
         
         /**
          * __construct
@@ -54,6 +56,18 @@
             $this->traits = $array;
         }
 
+        public function rapidStrike () {
+            $percentageChanseToUseAbility = 10;
+            if (rand(1,100) <= $percentageChanseToUseAbility) {
+                return true;
+            } else return false;
+        }
 
+        public function tryToUseShieldAgainstDamage ($damage) {
+            $percentageChanseToUseAbility = 20;
+            $wasAbleToUseMagicShield = rand(1,100) <= $percentageChanseToUseAbility;
+            if ($wasAbleToUseMagicShield) return $damage / 2;
+            return $damage;
+        }
 
     }
