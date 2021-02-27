@@ -124,6 +124,10 @@
             $this->beast->setTraits($beastTraits);
             $this->battleStats->combatants['hero'] = $this->hero->traits;
             $this->battleStats->combatants['beast'] = $this->beast->traits;
+            if (isset($data->combatants->isAttacker)) {
+                $this->battleStats->combatants['isAttacker'] = $data->combatants->isAttacker === 'hero'
+                    ? 'beast' : 'hero';
+            }
         }
         
     }

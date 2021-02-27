@@ -10,7 +10,11 @@
 
         public function initializeCombat() {
             if (!($this->battleStats->combatants['beast'] && $this->battleStats->combatants['hero'] &&
-                $this->battleStats->combatants['isAttacker'])) return false;
+            $this->battleStats->combatants['isAttacker'])) {
+                print_r($this->battleStats);
+                echo 'ERROR - initializeCombat(): lack of combatans info';
+                return false;
+            } 
             $this->startCombat();
             $this->updateRound();
             return $this->battleStats;
