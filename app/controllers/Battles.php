@@ -27,9 +27,10 @@
             $this->hero = new Heroes($initialize);
             $this->beast = new Beasts($initialize);
             $this->battleStats = new stdClass();
+
             $this->battleStats->combatants = [
-                'hero' => [$this->hero->traits],
-                'beast' => [$this->beast->traits],
+                'hero' => $this->hero->traits,
+                'beast' => $this->beast->traits,
                 'isAttacker' => null
             ];
             $this->battleStats->battle = [
@@ -52,8 +53,8 @@
         private function setBattleStats()
         {
             $this->battleStats->combatants = [
-                'hero' => [$this->hero->traits],
-                'beast' => [$this->beast->traits]
+                'hero' => $this->hero->traits,
+                'beast' => $this->beast->traits
             ];
             $this->battleStats->battle = [
                 'log' => [$this->battleActions['battleStart']],
@@ -117,8 +118,8 @@
         }
 
         private function setCombatantsStats ($data) {
-            $heroTraits = $data->combatants->hero[0];
-            $beastTraits = $data->combatants->beast[0];
+            $heroTraits = $data->combatants->hero;
+            $beastTraits = $data->combatants->beast;
             $this->hero->setTraits($heroTraits);
             $this->beast->setTraits($beastTraits);
             $this->battleStats->combatants['hero'] = $this->hero->traits;

@@ -149,7 +149,7 @@ class Battle {
     
     displayStats (data) {
         let combatants = data['combatants'];
-        let stats = [combatants['hero'][0], combatants['beast'][0]];
+        let stats = [combatants['hero'], combatants['beast']];
 
         $(".table").remove();
         this.displayedStats = [];
