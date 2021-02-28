@@ -81,7 +81,7 @@ class Battle {
                     let returnedData = JSON.parse(data);
                     thisClassBattle.updateBattleLog(returnedData);
                     thisClassBattle.populateArena(returnedData);
-                    thisClassBattle.endOfBattle(returnedData['winner']);
+                    thisClassBattle.endOfBattle(returnedData);
                 },
                 error: function(data) {
                     console.error(data)
@@ -145,12 +145,17 @@ class Battle {
         }
     }
     
-    endOfBattle(winner, logs) {
-        if (winner) {
-            let modalText = logs.map(log => "<p>" + log +"</p>")
-            $('.modal-body').append(modalText);
-            $('#endingModal').modal('show');
-            stateHandler(state = 3);
+    endOfBattle(data) {
+        let isGameOver = data.battle.status === 'gameOver';
+        if (isGameOver) {
+            let log = data?.battle?.log;
+            if (log.length) {
+                let modalLastLog = log[log.length -1];
+                let modalText = "<p>" + modalLastLog +"</p>"
+                $('.modal-body').append(modalText);
+                $('#endingModal').modal('show');
+                this.stateHandler(3);
+            }
         }
     }
     

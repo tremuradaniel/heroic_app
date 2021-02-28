@@ -69,21 +69,28 @@
                 echo 'Could not get battleStats';
                 return;
             }
+
             $this->setCombatantsStats($data);
             $this->setBattleRound($data);
-            $this->setCurrRoundNumber($data);
+            
+            $isFirstRound = $this->round === self::FIRST_ROUND;
+            
             if ($this->round < self::FIRST_ROUND) {
                 echo 'problem with setting current round';
                 return;
             }
-            if ($this->round === self::FIRST_ROUND) $this->determineWhoHasFirstBlow();
-            $result = $this->runRound();
+            
+            if ($isFirstRound) $this->determineWhoHasFirstBlow();
+
+            $confrontationResult = $this->runRound();
+            $result = $this->checkForGameOver($confrontationResult);
             echo json_encode($result);
         }
 
-        private function setCurrRoundNumber ($data) {
-            $this->round = $data !== null && isset($data->battle) &&
-                isset($data->battle->round) ? $data->battle->round : -1;
+        private function setDraw () {
+            array_push($this->battleStats->battle['log'], $this->battleActions['draw']);
+            $this->battleStats->battle['status'] = 'gameOver';
+            return $this->battleStats;
         }
 
         private function determineWhoHasFirstBlow () {
@@ -133,7 +140,22 @@
         }
 
         private function setBattleRound ($data) {
-            $this->battleStats->battle['round'] = $data->battle->round;
+            $round = $data->battle->round;
+            $this->battleStats->battle['round'] = $round;
+            $this->round = $round;
         }
 
+        private function checkForGameOver ($roundResuls) {
+            $heroHealth = $roundResuls->combatants['hero']->health;
+            $beastHealth = $roundResuls->combatants['beast']->health;
+            $this->round = $roundResuls->battle['round'];
+            $maximumRoundsReached = $this->round >= self::MAX_ROUND;
+            if ($maximumRoundsReached) {
+                if ($heroHealth > 0 && $beastHealth > 0) {
+                    return $this->setDraw();
+                }
+            }
+            return $roundResuls;
+        }
+        
     }
