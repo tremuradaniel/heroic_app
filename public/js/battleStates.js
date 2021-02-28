@@ -14,8 +14,8 @@ class Battle {
         if (state === 1) {
             sessionStorage.clear();
             this.setInitializeBattleEventHandler();     
-            this.setStartBattleEventHandler();
-            this.setNextRoundEventHandler();
+            this.setBattleEventHandler("#next-round", true);
+            this.setBattleEventHandler("#start-battle");
             this.setPlayAgainEventHandler();
         } 
     }
@@ -68,10 +68,9 @@ class Battle {
         });
     }
     
-    setStartBattleEventHandler() {
-        console.log('setStartBattleEventHandler')
+    setBattleEventHandler (id, triggerStateHandler) {
         let thisClassBattle = this
-        $("#start-battle").click(function(event) {
+        $(id).click(function(event) {
             event.preventDefault();
             $.ajax({
                 url: `/battles/triggerRound`,
@@ -88,31 +87,11 @@ class Battle {
                     console.error(data)
                 }
             });
+            if (triggerStateHandler) thisClassBattle.stateHandler(thisClassBattle.state);
             new Battle(2);
         });
     }
-    
-    setNextRoundEventHandler() {
-        let thisClassBattle = this
-        $("#next-round").click(function(event) {
-            event.preventDefault();
-            $.ajax({
-                url: "/battles/triggerRound",
-                type: "get",
-                data: { 'battleStats': sessionStorage.getItem("battleStats") },
-                success: function(data) {
-                    console.log(data);
-                    let returnedData = JSON.parse(data);
-                    thisClassBattle.updateBattleLog(returnedData);
-                    thisClassBattle.populateArena(returnedData);
-                    thisClassBattle.endOfBattle(returnedData['winner']);
-                },
-            });
-            thisClassBattle.stateHandler(thisClassBattle.state);
-            new Battle(2);
-        });
-    }
-    
+
     setPlayAgainEventHandler() {
         $("#battle-again").click(function() {
             $("#battle-log").remove();
