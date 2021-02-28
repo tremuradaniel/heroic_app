@@ -105,6 +105,12 @@ class Battle {
         let stats = JSON.stringify(data);
         sessionStorage.battleStats = stats;
         this.displayStats(data);
+        this.updateDisplayedRound(data);
+    }
+
+    updateDisplayedRound (data) {
+        let round = data?.battle?.round;
+        $("#roundCounter").text(round);
     }
     
     displayStats (data) {
@@ -126,21 +132,6 @@ class Battle {
         });
         $('#hero-stats').append(this.displayedStats[0]);
         $('#beast-stats').append(this.displayedStats[1]);
-    }
-    
-    updateBattleStats(wasAttacker) {
-        if (sessionStorage.getItem("BattleStats")) {
-            let battleStats = JSON.parse(sessionStorage.getItem("BattleStats"));
-            let round = ++battleStats.round;
-            $("#roundCounter").text(round);
-            battleStats.wasAttacker = wasAttacker;
-            sessionStorage.BattleStats = JSON.stringify(battleStats);
-        } else {
-            sessionStorage.BattleStats = JSON.stringify({
-                wasAttacker: wasAttacker,
-                round: 0
-            });
-        }
     }
     
     updateBattleLog (data) {

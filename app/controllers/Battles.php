@@ -2,6 +2,7 @@
     class Battles extends Controller {
 
         public const MAX_ROUND = 20;
+        public const FIRST_ROUND = 0;
         public $log = [];
         public $battleActions = [
             'battleStart' => 'The fight is about to begin!',
@@ -69,12 +70,13 @@
                 return;
             }
             $this->setCombatantsStats($data);
+            $this->setBattleRound($data);
             $this->setCurrRoundNumber($data);
-            if ($this->round < 0) {
+            if ($this->round < self::FIRST_ROUND) {
                 echo 'problem with setting current round';
                 return;
             }
-            if ($this->round === 0) $this->determineWhoHasFirstBlow();
+            if ($this->round === self::FIRST_ROUND) $this->determineWhoHasFirstBlow();
             $result = $this->runRound();
             echo json_encode($result);
         }
@@ -129,5 +131,9 @@
                     ? 'beast' : 'hero';
             }
         }
-        
+
+        private function setBattleRound ($data) {
+            $this->battleStats->battle['round'] = $data->battle->round;
+        }
+
     }
