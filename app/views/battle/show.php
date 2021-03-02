@@ -9,7 +9,7 @@
                     <p class="lead text-muted">Let's see a battle!</p>
                     <p>
                         <a id="start-battle" style="display: none;" class="btn btn-danger my-2">Begin Battle</a>
-                        <a id="battle-again" style="display: none;" class="btn btn-dark my-2">Continue the slaughter</a>
+                        <a id="battle-again" style="display: none;" class="btn btn-dark my-2">Repeate the slaughter</a>
                         <a id="next-round" style="display: none;" class="btn btn-dark my-2">Next round</a>
                     </p>
                 </div>

@@ -22,6 +22,18 @@ class Battle {
     
     stateHandler (state) {
         switch (state) {
+            case 0:
+                // set initial state
+                this.setInitializeBattleEventHandler();
+                $("#initialize-battle").show();
+                $("#battle-again").hide();
+                $("#start-battle").show();
+                $("#end-battle").hide();
+                $("#repete-battle").hide();
+                $("#roundCounter").text("-");
+                // clear data
+                sessionStorage.clear();
+                break;
             case 1:
                 // prepare battle
                 $("#start-battle").show();
@@ -93,11 +105,13 @@ class Battle {
     }
 
     setPlayAgainEventHandler() {
-        $("#battle-again").click(function() {
+        let thisClassBattle = this
+        $("#battle-again").click(function(event) {
+            event.preventDefault();
             $("#battle-log").remove();
             $(".modal-body").empty();
-            state = 0;
-            stateHandler(state);
+            let state = 0;
+            thisClassBattle.stateHandler(state);
         });
     }
     
