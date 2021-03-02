@@ -141,7 +141,7 @@ class Battle {
         if (data?.battle?.log.length) logs = data.battle.log;
         for (const [key, log] of logs.entries()) {
             if (sessionLogs[key] === log) continue
-            $('#battle-log').append('- ' + log + '\n');
+            $('#battle-log').prepend('- ' + log + '\n');
         }
     }
     
