@@ -93,6 +93,15 @@
             return $this->battleStats;
         }
 
+        private function setVictory($defender) {
+            $log = $defender === 'hero' 
+                ? $this->battleActions['heroFallen']
+                : $this->battleActions['beastSlayed'];
+            array_push($this->battleStats->battle['log'], $log);
+            $this->battleStats->battle['status'] = 'gameOver';
+            return $this->battleStats;
+        }
+
         private function determineWhoHasFirstBlow () {
             $attacker = $this->setAttackerBasedOn('speed');
             if (is_null($attacker)) $attacker = $this->setAttackerBasedOn('luck');
@@ -155,7 +164,16 @@
                     return $this->setDraw();
                 }
             }
+            if ($this->checkIfDefenderIsKO($roundResuls)) {
+                return $this->setVictory($this->defender);
+            }
             return $roundResuls;
+        }
+
+        private function checkIfDefenderIsKO ($roundResuls) {
+            $this->defender = $roundResuls->combatants['isAttacker'] === 'hero'
+                ? 'beast' : 'hero';
+            return $roundResuls->combatants[$this->defender]->health <= 0;
         }
         
     }
